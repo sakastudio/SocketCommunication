@@ -1,0 +1,6 @@
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\bin\Debug\SocketCommunication.exe
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\bin\Debug\SocketCommunication.pdb
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\obj\Debug\SocketCommunication.csprojAssemblyReference.cache
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\obj\Debug\SocketCommunication.csproj.CoreCompileInputs.cache
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\obj\Debug\SocketCommunication.exe
+C:\Users\satou_katsumi\RiderProjects\SocketCommunication\SocketCommunication\obj\Debug\SocketCommunication.pdb
