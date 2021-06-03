@@ -1,0 +1,13 @@
+﻿# デフォルトの無視ファイル
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/modules.xml
+/.idea.SocketCommunication.iml
+/contentModel.xml
+# データソースのローカルストレージがファイルを無視しました
+/../../../../../../../../:\Users\satou_katsumi\RiderProjects\SocketCommunication\.idea\.idea.SocketCommunication\.idea/dataSources/
+/dataSources.local.xml
+# エディターベースの HTTP クライアントリクエスト
+/httpRequests/
