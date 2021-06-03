@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketCommunication", "SocketCommunication\SocketCommunication.csproj", "{979F9A13-5222-47A5-A4AA-1BBAA2B15985}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketCommunication", "SocketCommunication\SocketCommunication.csproj", "{DD86DAEB-4F4C-4DB2-BE6D-E05A70B536E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{979F9A13-5222-47A5-A4AA-1BBAA2B15985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{979F9A13-5222-47A5-A4AA-1BBAA2B15985}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{979F9A13-5222-47A5-A4AA-1BBAA2B15985}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{979F9A13-5222-47A5-A4AA-1BBAA2B15985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD86DAEB-4F4C-4DB2-BE6D-E05A70B536E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD86DAEB-4F4C-4DB2-BE6D-E05A70B536E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD86DAEB-4F4C-4DB2-BE6D-E05A70B536E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD86DAEB-4F4C-4DB2-BE6D-E05A70B536E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
