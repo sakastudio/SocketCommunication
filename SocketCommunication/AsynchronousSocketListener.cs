@@ -42,22 +42,22 @@ public class AsynchronousSocketListener
         Socket listener = new Socket(ipAddress.AddressFamily,  
             SocketType.Stream, ProtocolType.Tcp );  
   
-        // Bind the socket to the local endpoint and listen for incoming connections.  
+        // ソケットをローカルのエンドポイントにバインドし、受信する接続を待ちます。 
         try {  
             listener.Bind(localEndPoint);  
             listener.Listen(100);  
   
             while (true) {  
-                // Set the event to nonsignaled state.  
+                // イベントをノンシグナリング状態にする。  
                 allDone.Reset();  
   
-                // Start an asynchronous socket to listen for connections.  
+                // 接続を待ち受ける非同期ソケットを起動します。 
                 Console.WriteLine("Waiting for a connection...");  
                 listener.BeginAccept(
                     new AsyncCallback(AcceptCallback),  
                     listener );  
   
-                // Wait until a connection is made before continuing.  
+                // 接続が完了するまで待ってから続行してください。 
                 allDone.WaitOne();  
             }  
   
@@ -72,14 +72,14 @@ public class AsynchronousSocketListener
 
     public static void AcceptCallback(IAsyncResult ar)
     {
-        // Signal the main thread to continue.  
+        // メインスレッドに継続するように信号を送ります。 
         allDone.Set();  
   
-        // Get the socket that handles the client request.  
+        // クライアントのリクエストを処理するソケットを取得します。 
         Socket listener = (Socket) ar.AsyncState;  
         Socket handler = listener.EndAccept(ar);  
   
-        // Create the state object.  
+        // Stateオブジェクトを作成します。
         StateObject state = new StateObject();  
         state.workSocket = handler;  
         handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
@@ -90,21 +90,19 @@ public class AsynchronousSocketListener
     {
         String content = String.Empty;  
   
-        // Retrieve the state object and the handler socket  
-        // from the asynchronous state object.  
+        // 非同期ステートオブジェクトからステートオブジェクトとハンドラソケットを取得します。 
         StateObject state = (StateObject) ar.AsyncState;  
         Socket handler = state.workSocket;  
   
-        // Read data from the client socket.
+        //  クライアント・ソケットからデータを読み込みます。
         int bytesRead = handler.EndReceive(ar);  
   
         if (bytesRead > 0) {  
-            // There  might be more data, so store the data received so far.  
+            // まだまだデータがあるかもしれないので、これまでに受信したデータを保存しておきましょう。 
             state.sb.Append(Encoding.ASCII.GetString(  
                 state.buffer, 0, bytesRead));  
   
-            // Check for end-of-file tag. If it is not there, read
-            // more data.  
+            // ファイルの終わりのタグをチェックします。タグがない場合は、さらにデータを読み込みます。 
             content = state.sb.ToString();  
             if (content.IndexOf("<EOF>") > -1) {  
                 // All the data has been read from the
@@ -123,10 +121,10 @@ public class AsynchronousSocketListener
 
     private static void Send(Socket handler, String data)
     {
-        // Convert the string data to byte data using ASCII encoding.  
+        // 文字列データをASCIIエンコーディングでバイトデータに変換します。 
         byte[] byteData = Encoding.ASCII.GetBytes(data);  
   
-        // Begin sending the data to the remote device.  
+        // リモートデバイスへのデータ送信を開始します。 
         handler.BeginSend(byteData, 0, byteData.Length, 0,  
             new AsyncCallback(SendCallback), handler);  
     }
@@ -135,10 +133,10 @@ public class AsynchronousSocketListener
     {
         try
         {
-            // Retrieve the socket from the state object.  
+            // stateオブジェクトからソケットを取得します。 
             Socket handler = (Socket) ar.AsyncState;  
   
-            // Complete sending the data to the remote device.  
+            // リモートデバイスへのデータ送信完了  
             int bytesSent = handler.EndSend(ar);  
             Console.WriteLine("Sent {0} bytes to client.", bytesSent);  
   
