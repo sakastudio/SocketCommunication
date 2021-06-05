@@ -31,14 +31,13 @@ public class AsynchronousSocketListener
 
     public static void StartListening()
     {
-        // Establish the local endpoint for the socket.  
-        // The DNS name of the computer  
-        // running the listener is "host.contoso.com".  
+        // ソケットのローカルエンドポイントを確立します。 
+        // リスナーを起動しているコンピュータのDNS名は「host.contoso.com」です。  
         IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());  
         IPAddress ipAddress = ipHostInfo.AddressList[0];  
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);  
   
-        // Create a TCP/IP socket.  
+        // TCP/IPソケットを作成します。 
         Socket listener = new Socket(ipAddress.AddressFamily,  
             SocketType.Stream, ProtocolType.Tcp );  
   
@@ -83,7 +82,17 @@ public class AsynchronousSocketListener
         StateObject state = new StateObject();  
         state.workSocket = handler;  
         handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
-            new AsyncCallback(ReadCallback), state);  
+            ReadCallback, state);
+
+        for (int i = 0; i < 10; i++)
+        {
+            Send(handler, i.ToString());
+            Thread.Sleep(1000);
+        }
+        //handler.Shutdown(SocketShutdown.Both);  
+        //handler.Close(); 
+        
+        
     }
 
     public static void ReadCallback(IAsyncResult ar)
@@ -105,14 +114,13 @@ public class AsynchronousSocketListener
             // ファイルの終わりのタグをチェックします。タグがない場合は、さらにデータを読み込みます。 
             content = state.sb.ToString();  
             if (content.IndexOf("<EOF>") > -1) {  
-                // All the data has been read from the
-                // client. Display it on the console.  
+                // すべてのデータがクライアントから読み込まれました。コンソールに表示します。
                 Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",  
                     content.Length, content );  
-                // Echo the data back to the client.  
+                // そのデータをクライアントにエコーバックする。
                 Send(handler, content);  
             } else {  
-                // Not all data received. Get more.  
+                // すべてのデータを受信したわけではありません。もっと見る  
                 handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,  
                 new AsyncCallback(ReadCallback), state);  
             }  
@@ -138,11 +146,7 @@ public class AsynchronousSocketListener
   
             // リモートデバイスへのデータ送信完了  
             int bytesSent = handler.EndSend(ar);  
-            Console.WriteLine("Sent {0} bytes to client.", bytesSent);  
-  
-            handler.Shutdown(SocketShutdown.Both);  
-            handler.Close();  
-  
+            Console.WriteLine("Sent {0} bytes to client.", bytesSent);
         }
         catch (Exception e)
         {
