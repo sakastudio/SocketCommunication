@@ -53,20 +53,15 @@ public class AsynchronousSocketListener
                 // 接続を待ち受ける非同期ソケットを起動します。 
                 Console.WriteLine("Waiting for a connection...");  
                 listener.BeginAccept(
-                    new AsyncCallback(AcceptCallback),  
+                    AcceptCallback,  
                     listener );  
   
                 // 接続が完了するまで待ってから続行してください。 
                 allDone.WaitOne();  
-            }  
-  
+            }
         } catch (Exception e) {  
             Console.WriteLine(e.ToString());  
-        }  
-  
-        Console.WriteLine("\nPress ENTER to continue...");  
-        Console.Read();  
-  
+        }
     }
 
     public static void AcceptCallback(IAsyncResult ar)
@@ -83,16 +78,6 @@ public class AsynchronousSocketListener
         state.workSocket = handler;  
         handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
             ReadCallback, state);
-
-        for (int i = 0; i < 10; i++)
-        {
-            Send(handler, i.ToString());
-            Thread.Sleep(1000);
-        }
-        //handler.Shutdown(SocketShutdown.Both);  
-        //handler.Close(); 
-        
-        
     }
 
     public static void ReadCallback(IAsyncResult ar)
@@ -112,7 +97,7 @@ public class AsynchronousSocketListener
   
         // リモートデバイスへのデータ送信を開始します。 
         handler.BeginSend(byteData, 0, byteData.Length, 0,  
-            new AsyncCallback(SendCallback), handler);  
+            SendCallback, handler);  
     }
 
     private static void SendCallback(IAsyncResult ar)
