@@ -97,34 +97,12 @@ public class AsynchronousSocketListener
 
     public static void ReadCallback(IAsyncResult ar)
     {
-        String content = String.Empty;  
-  
         // 非同期ステートオブジェクトからステートオブジェクトとハンドラソケットを取得します。 
         StateObject state = (StateObject) ar.AsyncState;  
-        Socket handler = state.workSocket;  
   
         //  クライアント・ソケットからデータを読み込みます。
-        int bytesRead = handler.EndReceive(ar);  
-  
-        if (bytesRead > 0) {  
-            // まだまだデータがあるかもしれないので、これまでに受信したデータを保存しておきましょう。 
-            state.sb.Append(Encoding.ASCII.GetString(  
-                state.buffer, 0, bytesRead));  
-  
-            // ファイルの終わりのタグをチェックします。タグがない場合は、さらにデータを読み込みます。 
-            content = state.sb.ToString();  
-            if (content.IndexOf("<EOF>") > -1) {  
-                // すべてのデータがクライアントから読み込まれました。コンソールに表示します。
-                Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",  
-                    content.Length, content );  
-                // そのデータをクライアントにエコーバックする。
-                Send(handler, content);  
-            } else {  
-                // すべてのデータを受信したわけではありません。もっと見る  
-                handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,  
-                new AsyncCallback(ReadCallback), state);  
-            }  
-        }  
+        String content = state.sb.ToString();  
+        Console.WriteLine(content);
     }
 
     private static void Send(Socket handler, String data)
