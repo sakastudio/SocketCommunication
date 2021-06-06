@@ -46,41 +46,51 @@ public class AsynchronousSocketListener
         listener.Listen(100);  
   
         while (true) {
-            try
-            {
-                // イベントをノンシグナリング状態にする。  
-                allDone.Reset();  
-  
-                // 接続を待ち受ける非同期ソケットを起動します。 
-                Console.WriteLine("Waiting for a connection...");  
-                listener.BeginAccept(
-                    AcceptCallback,  
-                    listener );  
-  
-                // 接続が完了するまで待ってから続行してください。 
-                allDone.WaitOne();  
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            // イベントをノンシグナリング状態にする。   
+            allDone.Reset(); 
+            
+            // 接続を待ち受ける非同期ソケットを起動します。 
+            Console.WriteLine("Waiting for a connection...");  
+            listener.BeginAccept(
+                AcceptCallback,  
+                listener );  
+            
+            // 接続が完了するまで待ってから続行してください。 
+            allDone.WaitOne();  
         }
     }
 
     public static void AcceptCallback(IAsyncResult ar)
     {
-        // メインスレッドに継続するように信号を送ります。 
-        allDone.Set();  
+
+        try
+        {
+            // メインスレッドに継続するように信号を送ります。 
+            allDone.Set();  
   
-        // クライアントのリクエストを処理するソケットを取得します。 
-        Socket listener = (Socket) ar.AsyncState;  
-        Socket handler = listener.EndAccept(ar);  
+            // クライアントのリクエストを処理するソケットを取得します。 
+            Socket listener = (Socket) ar.AsyncState;  
+            Socket handler = listener.EndAccept(ar);  
   
-        // Stateオブジェクトを作成します。
-        StateObject state = new StateObject();  
-        state.workSocket = handler;  
-        handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
-            ReadCallback, state);
+            // Stateオブジェクトを作成します。
+            StateObject state = new StateObject();  
+            state.workSocket = handler;  
+            handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
+                ReadCallback, state);
+            
+            for (int i = 0; i < 10; i++)
+            {
+                Send(handler, i.ToString());
+                Thread.Sleep(1000);
+            }
+            handler.Shutdown(SocketShutdown.Both);  
+            handler.Close(); 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
     }
 
     public static void ReadCallback(IAsyncResult ar)
