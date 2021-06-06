@@ -42,11 +42,12 @@ public class AsynchronousSocketListener
             SocketType.Stream, ProtocolType.Tcp );  
   
         // ソケットをローカルのエンドポイントにバインドし、受信する接続を待ちます。 
-        try {  
-            listener.Bind(localEndPoint);  
-            listener.Listen(100);  
+        listener.Bind(localEndPoint);  
+        listener.Listen(100);  
   
-            while (true) {  
+        while (true) {
+            try
+            {
                 // イベントをノンシグナリング状態にする。  
                 allDone.Reset();  
   
@@ -59,8 +60,10 @@ public class AsynchronousSocketListener
                 // 接続が完了するまで待ってから続行してください。 
                 allDone.WaitOne();  
             }
-        } catch (Exception e) {  
-            Console.WriteLine(e.ToString());  
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 
