@@ -2,8 +2,8 @@
 using System.Net;  
 using System.Net.Sockets;  
 using System.Text;  
-using System.Threading;  
-  
+using System.Threading;
+
 // State object for reading client data asynchronously  
 public class StateObject
 {
@@ -19,15 +19,12 @@ public class StateObject
     // Client socket.
     public Socket workSocket = null;
 }  
-  
+//パケットを受けるところ
 public class AsynchronousSocketListener
 {
     // Thread signal.  
     public static ManualResetEvent allDone = new ManualResetEvent(false);
-
-    public AsynchronousSocketListener()
-    {
-    }
+    
 
     public static void StartListening()
     {
@@ -78,11 +75,6 @@ public class AsynchronousSocketListener
             handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
                 ReadCallback, state);
             
-            for (int i = 0; i < 10; i++)
-            {
-                Send(handler, i.ToString());
-                Thread.Sleep(1000);
-            }
             handler.Shutdown(SocketShutdown.Both);  
             handler.Close(); 
         }
@@ -112,13 +104,11 @@ public class AsynchronousSocketListener
         content = state.sb.ToString();
         
         Console.WriteLine(content);
+        Send(handler, new byte[]{0,1,2,3,4});
     }
 
-    private static void Send(Socket handler, String data)
+    private static void Send(Socket handler, byte[] byteData)
     {
-        // 文字列データをASCIIエンコーディングでバイトデータに変換します。 
-        byte[] byteData = Encoding.ASCII.GetBytes(data);  
-  
         // リモートデバイスへのデータ送信を開始します。 
         handler.BeginSend(byteData, 0, byteData.Length, 0,  
             SendCallback, handler);  
@@ -141,9 +131,8 @@ public class AsynchronousSocketListener
         }  
     }
 
-    public static int Main(String[] args)
+    public static void Main(string[] args)
     {
-        StartListening();  
-        return 0;  
+        StartListening();
     }
 }
