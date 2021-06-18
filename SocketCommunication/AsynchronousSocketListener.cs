@@ -106,11 +106,8 @@ public class AsynchronousSocketListener
         Console.WriteLine(content);
     }
 
-    private static void Send(Socket handler, String data)
+    private static void Send(Socket handler, byte[] byteData)
     {
-        // 文字列データをASCIIエンコーディングでバイトデータに変換します。 
-        byte[] byteData = Encoding.ASCII.GetBytes(data);  
-  
         // リモートデバイスへのデータ送信を開始します。 
         handler.BeginSend(byteData, 0, byteData.Length, 0,  
             SendCallback, handler);  
